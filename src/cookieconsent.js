@@ -1,4 +1,4 @@
-SameSite(function(cc) {
+(function(cc) {
   // stop from running again, if accidently included more than once.
   if (cc.hasInitialised) return;
 
@@ -45,7 +45,7 @@ SameSite(function(cc) {
             .shift();
     },
 
-    setCookie: function(name, value, expiryDays, domain, path, secure, SameSite) {
+    setCookie: function(name, value, expiryDays, domain, path, secure, sameSite) {
       var exdate = new Date();
       exdate.setHours(exdate.getHours() + ((expiryDays || 365) * 24));
 
@@ -61,8 +61,8 @@ SameSite(function(cc) {
       if (secure) {
         cookie.push('secure');
       }
-      if (SameSite) {
-        cookie.push('SameSite=' + SameSite);
+      if (sameSite) {
+        cookie.push('SameSite=' + sameSite);
       }
       document.cookie = cookie.join(';');
     },
@@ -237,7 +237,7 @@ SameSite(function(cc) {
         secure: false,
 
         // Sets the "SameSite"-Attribute of the `cookieconsent_status`-Cookie allowed attributes are "Lax", "Strict" and "None" ("None" is only allowed with the `Secure`-flag)
-        SameSite: null
+        sameSite: null
       },
 
       // these callback hooks are called at certain points in the program execution
@@ -661,7 +661,7 @@ SameSite(function(cc) {
           c.domain,
           c.path,
           c.secure,
-          c.SameSite
+          c.sameSite
         );
 
         this.options.onStatusChange.call(this, status, chosenBefore);
@@ -676,7 +676,7 @@ SameSite(function(cc) {
 
     CookiePopup.prototype.clearStatus = function() {
       var c = this.options.cookie;
-      util.setCookie(c.name, '', -1, c.domain, c.path, c.secure, c.SameSite);
+      util.setCookie(c.name, '', -1, c.domain, c.path, c.secure, c.sameSite);
     };
 
     // This needs to be called after 'fadeIn'. This is the code that actually causes the fadeIn to work
